@@ -55,13 +55,13 @@ const signup = async (req, res) => {
                     port: 587,
                     secure: false,
                     auth: {
-                        user: "rachael27@ethereal.email",
-                        pass: "QtGeMVPq5TbCdq94Av",
+                        user: "sonya.zieme@ethereal.email",
+                        pass: "Vxx3Nb47xNf6SKrmgd",
                     },
                 });
 
                 const mailOptions = {
-                    from: "rachael27@ethereal.email",
+                    from: "sonya.zieme@ethereal.email",
                     to: email,
                     subject: "Email Verification",
                     text: `Hii Pleaser Verify Your Account http://${req.headers.host}/api/confirm/${token.token}`,
@@ -142,7 +142,9 @@ const confirmation = (req, res) => {
                 if (err) {
                     return res.status(500).send({ msg: err.message });
                 }
-                return res.status(200).send("the account has ben verified loging");
+                return res
+                    .status(200)
+                    .send("the account has ben verified loging");
             });
         });
     });
