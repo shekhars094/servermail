@@ -62,7 +62,7 @@ const signup = async (req, res) => {
                     from: "rachael27@ethereal.email",
                     to: email,
                     subject: "Email Verification",
-                    text: `Hii Pleaser Verify Your Account http://${req.headers.host}/confirm/:${token.token}`,
+                    text: `Hii Pleaser Verify Your Account http://${req.headers.host}/confirm/${token.token}`,
                 };
 
                 transporter.sendMail(mailOptions, function (err) {
