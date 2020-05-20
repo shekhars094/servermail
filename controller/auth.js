@@ -82,6 +82,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
@@ -92,14 +93,18 @@ const login = async (req, res) => {
 
     if (user.comparePassword(password)) {
         const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+        res.cookie("token", token, { maxAge: 1000000 });
+        return res.json({
+            _id: user._id,
+            email: user.email,
+            token: token,
+            message: "Login Succesfully",
+        });
+    } else {
+        return res.status(400).json({
+            err: "Something is wrong",
+        });
     }
-    res.cookie("token", token, { maxAge: 1000000 });
-    res.json({
-        _id: user._id,
-        email: user.email,
-        token: token,
-        message: "Login Succesfully",
-    });
 };
 
 // confirmation logic
