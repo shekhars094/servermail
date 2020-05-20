@@ -48,16 +48,18 @@ const signup = async (req, res) => {
                     });
                 }
 
-                var transporter = nodemailer.createTransport({
-                    service: "gmail",
+                let transporter = nodemailer.createTransport({
+                    host: "smtp.ethereal.email",
+                    port: 587,
+                    secure: false,
                     auth: {
-                        user: "shekharshashi501@gmail.com",
-                        pass: "shekhar/501",
+                        user: "rachael27@ethereal.email",
+                        pass: "QtGeMVPq5TbCdq94Av",
                     },
                 });
 
                 const mailOptions = {
-                    from: process.env.EMAIL_ACCOUNT,
+                    from: "rachael27@ethereal.email",
                     to: email,
                     subject: "Email Verification",
                     text: `Hii Pleaser Verify Your Account http://${req.headers.host}/confirm/:${token.token}`,
@@ -92,14 +94,18 @@ const login = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (user.comparePassword(password)) {
-        const token = jwt.sign({ _id: user._id }, process.env.SECRET);
-        res.cookie("token", token, { maxAge: 1000000 });
-        return res.json({
-            _id: user._id,
-            email: user.email,
-            token: token,
-            message: "Login Succesfully",
-        });
+        if (!user.isVerified) {
+            return res.status(400).json({ msg: "User is not verfied" });
+        } else {
+            const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+            res.cookie("token", token, { maxAge: 1000000 });
+            return res.json({
+                _id: user._id,
+                email: user.email,
+                token: token,
+                message: "Login Succesfully",
+            });
+        }
     } else {
         return res.status(400).json({
             err: "Something is wrong",
