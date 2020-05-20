@@ -18,6 +18,6 @@ router.post(
     [check("email").isEmail(), check("password").isLength(6)],
     login
 );
-router.get("/confirmation/:token", confirmation);
+router.get("/confirm/:token", confirmation);
 
 module.exports = router;
