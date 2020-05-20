@@ -2,6 +2,8 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const Token = require("../models/token");
 
+const bcrypt = require("bcryptjs");
+
 const { validationResult } = require("express-validator");
 
 const jwt = require("jsonwebtoken");
@@ -93,7 +95,7 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email: email });
 
-    if (user.comparePassword(password)) {
+    if (bcrypt.compareSync(password, user.password)) {
         if (!user.isVerified) {
             return res.status(400).json({ msg: "User is not verfied" });
         } else {
@@ -123,7 +125,7 @@ const confirmation = (req, res) => {
                 msg: "not able to find valid token may be it is expired",
             });
 
-        User.findOne({ _id: token._userId }, function (err, user) {
+        User.findOne({ _id: req.params.token }, function (err, user) {
             if (!user)
                 return res.status(400).send({
                     msg: "We were unable to find a user for this account.",
