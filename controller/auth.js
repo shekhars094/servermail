@@ -142,7 +142,7 @@ const confirmation = (req, res) => {
                 if (err) {
                     return res.status(500).send({ msg: err.message });
                 }
-                res.status(200).send("the account has ben verified loging");
+                return res.status(200).send("the account has ben verified loging");
             });
         });
     });
