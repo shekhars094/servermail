@@ -125,7 +125,7 @@ const confirmation = (req, res) => {
                 msg: "not able to find valid token may be it is expired",
             });
 
-        User.findOne({ _id: req.params.token }, function (err, user) {
+        User.findOne({ _id: token._userId }, function (err, user) {
             if (!user)
                 return res.status(400).send({
                     msg: "We were unable to find a user for this account.",
